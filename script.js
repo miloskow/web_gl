@@ -27,6 +27,7 @@ const Square = function () {
     const canvas = document.getElementById('main-canvas');
     const gl = canvas.getContext('webgl');
     let canvasColor = [0.2, 0.2, 0.2];
+    
 
     checkGl(gl);
 
@@ -96,7 +97,7 @@ const Square = function () {
 
     gl.enableVertexAttribArray(posAttrLoc);
 
-     const squareColorBuffer = gl.createBuffer();
+    const squareColorBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, squareColorBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
 
@@ -114,7 +115,29 @@ const Square = function () {
     // render time
 
     gl.useProgram(program);
+
     gl.drawElements(gl.TRIANGLES, squareIndices.length, gl.UNSIGNED_SHORT, 0)
+    
+
+
+    document.getElementById('colorButton').addEventListener('click', () => {
+        
+        colors = [
+            Math.random(), Math.random(), Math.random(),
+            Math.random(), Math.random(), Math.random(),
+            Math.random(), Math.random(), Math.random(),
+            Math.random(), Math.random(), Math.random(),
+        ];
+
+        
+        gl.bindBuffer(gl.ARRAY_BUFFER, squareColorBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+
+        
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.drawElements(gl.TRIANGLES, squareIndices.length, gl.UNSIGNED_SHORT, 0);
+    });
+    
 
 }
 
