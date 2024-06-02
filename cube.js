@@ -107,8 +107,8 @@ const Triangle = function () {
     gl.validateProgram(program);
 
 
-    const args = [0.0, 0.0, 0.0];
-    const results = gen_box(args, 1);
+    const args = [2.0, 1.0, -1.0];
+    const results = gen_box(args, 0.5);
     const boxVertices = results.boxV;
     const boxIndices = results.boxI;
 
@@ -182,8 +182,12 @@ const Triangle = function () {
     const identityMat = mat4.create();
     const loop = function () {
         angle = performance.now() / 1000 / 60 * 23 * Math.PI;
+        mat4.identity(worldMatrix);
 
-        mat4.rotate(worldMatrix, identityMat, angle, [0.0, 1.0, 0.0]);
+        mat4.translate(worldMatrix, worldMatrix, args);
+        mat4.rotateY(worldMatrix, worldMatrix, angle);
+        mat4.translate(worldMatrix, worldMatrix, args.map(coord => -coord));
+        
 
         gl.uniformMatrix4fv(worldMatLoc, gl.FALSE, worldMatrix);
 
@@ -215,7 +219,3 @@ function checkLink(gl, program) {
         console.error('ERROR linking program!', gl.getProgramInfoLog(program));
     }
 }
-
-//gen_box([x,y,z] - pozycja w swiecie, s (float) - rozmiar) tworzy szescian
-// output -> boxVertives, (boxIndices - nie musi koniecznie być), worldMatrix ma się zmienić
-//zwroc uwage na gl matrix 
