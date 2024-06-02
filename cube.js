@@ -29,7 +29,7 @@ void main() {
 `
 
 let gen_box = function(array, size){
-    const boxVertices = 
+    const vertices = 
 	[
 		array[0] - size, array[1] +size, array[2] - size,
         array[0] - size, array[1] +size, array[2] + size,  
@@ -41,7 +41,7 @@ let gen_box = function(array, size){
         array[0] + size, array[1] -size, array[2] - size,      
 	];
 
-    const boxIndices =
+    const indices =
 	[
 		// Top
 		0, 1, 2,
@@ -67,7 +67,7 @@ let gen_box = function(array, size){
 		4, 5, 6,
 	    6, 5, 7,
 	];
-    return boxVertices;
+    return {boxV: vertices, boxI: indices};
 
 }
 
@@ -107,36 +107,12 @@ const Triangle = function () {
     gl.validateProgram(program);
 
 
-    const args = [0.0, 1.0, 1.0];
-    const boxVertices = gen_box(args, 1);
+    const args = [0.0, 0.0, 0.0];
+    const results = gen_box(args, 1);
+    const boxVertices = results.boxV;
+    const boxIndices = results.boxI;
+
 	
-    const boxIndices =
-	[
-		// Top
-		0, 1, 2,
-		0, 2, 3,
-
-		// Left
-		4, 1, 5,
-		5, 1, 0,
-
-		// Right
-		2, 6, 7,
-		2, 7, 3,
-
-		// Front
-		6, 2, 4,
-		1, 4, 2,
-
-		// Back
-		3, 7, 5,
-		3, 5, 0,
-
-		// Bottom
-		4, 5, 6,
-	    6, 5, 7,
-	];
-
     let colors = [
         0.3, 1.0, 1.0,
         0.0, 1.0, 1.0,
